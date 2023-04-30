@@ -1,0 +1,26 @@
+{% extends "profile.html" %}
+{% block title%}{{ category }}{% endblock%}
+{% block questions %}
+
+{% for question in user.questions %}
+<div class="card w-75 col-md-6 offset-md-3">
+    <div class="card-body">
+        <h5 class="card-title">{{ question.question }}</h5>
+        <p class="card-text">{{ question.answers|length }} answers.</p>
+        <div class="d-flex justify-content-between">
+            <form action="{{ url_for('views.question', category=question.category.name, question_id=question.id) }}" method="GET">
+                <button class="btn btn-primary" type="submit">Answer</button>
+            </form>
+            {% if question.user == current_user %}
+            <button onclick="deleteQuestion()" type="submit" class="btn btn-danger delete-question ml-2" data-questionid="{{ question.id }}" data-username="{{ question.user.username }}">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {% endif %}
+        </div>
+        
+    </div>
+</div>
+<br />
+{% endfor %}
+
+{% endblock %}

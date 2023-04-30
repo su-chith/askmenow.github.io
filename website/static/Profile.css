@@ -1,0 +1,45 @@
+
+
+
+.card-img{
+    border-radius: 50% ;
+}
+
+.card-text{
+    font-size: smaller;
+}
+.card{
+    width: 540px;
+}
+
+.card-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  .card1 {
+    width: 50%;
+    padding: 20px;
+    border: 1px none #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  } 
+
+  
+  
+  .card2 {
+    width: 50%;
+    padding: 20px;
+    border: 1px none#ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  .card3{
+    border: 1px solid #ccc;
+  }
+.list-group{
+    background: none;
+    border: none;
+}
+.container{
+    border: none;
+}

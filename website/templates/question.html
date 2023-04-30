@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title%}{{ question }}{% endblock%}
+
+{% block content %}
+
+<div class="d-flex justify-content-center my-3">
+    <div class="card w-75">
+        <div class="card-body">
+    
+            <h5 class="card-title">{{ question.question }}</h5>
+            <p class="card-text">{{ question.answers|length }} answers.</p>
+    
+        </div>
+    </div>
+</div>
+
+
+<div class="d-flex justify-content-center my-3">
+    <form class="w-75" method="POST" enctype="multipart/form-data">
+            <div class="form-group d-flex align-items-center">
+                <textarea class="form-control mb-3" name="answer" id="answer" rows="3" placeholder="Enter your answer"></textarea>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" name="photo" id="photo">
+                            <label class="custom-file-label" for="photo">Choose photo</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                    </div>
+                </div>
+            </div>
+    </form>
+</div>
+
+{% for answer in question.answers %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card mt-2">
+                {% if answer.photo %}
+                    <img src="{{ url_for('static', filename='images/' + answer.photo) }}" alt="Photo" class="card-img-top"
+                        class="img-fluid">
+                    {% endif %}
+                
+                <div class="card-body">
+                    <h5 class="card-title">{{ answer.question.question }}</h5>
+                    <p class="card-text">{{ answer.answer }}</p>
+                    
+                    <div class="card-footer">
+                        <small class="text-muted">Posted by <a href="#">{{ answer.user.username }}</a></small>
+                        <div class="float-right">
+                            <a href="#" class="btn btn-sm btn-outline-secondary mr-2"><i class="fa fa-thumbs-up"></i>
+                                Upvote</a>
+                            <a href="#" class="btn btn-sm btn-outline-secondary mr-2"><i class="fa fa-thumbs-down"></i>
+                            </a>
+                            <a href="#" class="btn btn-sm btn-outline-secondary"><i class="fa fa-comment"></i>
+                                Comment</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endfor %}
+
+{% endblock %}

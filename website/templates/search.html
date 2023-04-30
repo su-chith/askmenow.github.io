@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title%}search{% endblock%}
+
+{% block head %}
+
+<style>
+    .profile-card {
+        cursor: pointer;
+        transition: box-shadow 0.2s ease-in-out;
+    }
+
+    .profile-card:hover {
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    }
+</style>
+
+
+
+
+
+{% endblock %}
+
+{% block content %}
+<br />
+
+<div class="container">
+
+    {% for result in results %}
+    {% if current_user.id != result.id %}
+
+    <div class="card mb-2  profile-card" style="max-width: 540px; background: none;">
+        <div class="row no-gutters">
+            <div class="col-md-3">
+                <img src="11.jpeg" class="card-img" alt="..." style="border-radius: 50%;">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">{{ result.username }}</h5>
+                    <p class="card-text font-weight-lighter">{{ result.followers.count() }} followers {{
+                        result.following.count() }} following </p>
+                        {% if current_user in result.followers %}
+                        <form action="{{ url_for('auth.unfollow', user_id=result.id) }}" method="post">
+                            <button type="submit" class="btn btn-primary">Unfollow</button>
+                        </form>
+                        {% else %}
+                        <form action="{{ url_for('auth.follow', user_id=result.id) }}" method="post">
+                            <button type="submit" class="btn btn-primary">Follow</button>
+                        </form>
+                        {% endif %}
+                </div>
+            </div>
+            
+            
+            
+        </div>
+    </div>
+
+
+    <br />
+
+    {% endif %}
+    {% endfor %}
+</div>
+
+<script>
+    const cards = document.querySelectorAll('.profile-card');
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            const username = card.querySelector('.card-title').textContent;
+            window.location.href = `/profile/${username}`;
+        });
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "profile.html" %}
+{% block title%}{{ category }}{% endblock%}
+{% block questions %}
+
+{% for answer in user.answers %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card mt-2">
+                {% if answer.photo %}
+                    <img src="{{ url_for('static', filename='images/' + answer.photo) }}" alt="Photo" class="card-img-top"
+                        class="img-fluid">
+                    {% endif %}
+                
+                <div class="card-body">
+                    <h5 class="card-title">{{ answer.question.question }}</h5>
+                    <p class="card-text">{{ answer.answer }}</p>
+                    
+                    <div class="card-footer">
+                        <small class="text-muted">Posted by <a href="#">{{ user.username }}</a></small>
+                        <div class="float-right">
+                            <a href="#" class="btn btn-sm btn-outline-secondary mr-2"><i class="fa fa-thumbs-up"></i>
+                                Upvote</a>
+                            <a href="#" class="btn btn-sm btn-outline-secondary mr-2"><i class="fa fa-thumbs-down"></i>
+                            </a>
+                            <a href="#" class="btn btn-sm btn-outline-secondary"><i class="fa fa-comment"></i>
+                                Comment</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+{% endfor %}
+
+{% endblock %}

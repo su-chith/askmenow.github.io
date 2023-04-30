@@ -1,0 +1,65 @@
+{% extends "profile.html" %}
+{% block title%}{{ category }}{% endblock%}
+
+{% block head %}
+
+<style>
+    .profile-card {
+        cursor: pointer;
+        transition: box-shadow 0.2s ease-in-out;
+    }
+
+    .profile-card:hover {
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    }
+</style>
+
+
+
+{% endblock %}
+
+
+
+{% block following %}
+
+{% for followed in following %}
+<div class="card mb-2 profile-card col-md-6 offset-md-3" style="max-width: 540px; background: none;">
+    <div class="row no-gutters">
+        <div class="col-md-3">
+            <img src="11.jpeg" class="card-img" alt="..." style="border-radius: 50%;">
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title">{{ followed.username }}</h5>
+                <p class="card-text font-weight-lighter">{{ followed.followers.count() }} followers {{
+                    followed.following.count() }} following </p>
+                {% if followed != current_user %}
+                {% if current_user in followed.followers %}
+                <form action="{{ url_for('auth.unfollow', user_id=followed.id) }}" method="post">
+                    <button type="submit" class="btn btn-primary">Unfollow</button>
+                </form>
+                {% else %}
+                <form action="{{ url_for('auth.follow', user_id=followed.id) }}" method="post">
+                    <button type="submit" class="btn btn-primary">Follow</button>
+                </form>
+                {% endif %}
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+</div>
+<br />
+{% endfor %}
+
+<script>
+    const cards = document.querySelectorAll('.profile-card');
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            const username = card.querySelector('.card-title').textContent;
+            window.location.href = `/profile/${username}`;
+        });
+    });
+</script>
+
+{% endblock %}

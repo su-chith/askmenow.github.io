@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+{% block title%}Profile{% endblock %}
+
+
+{% block content %}
+
+<div class="container mt-3">
+  <div class="row">
+    <!-- Profile Information Section -->
+    <div class="col-lg-9 mb-2">
+      <div class="card">
+        <div class="row no-gutters align-items-center">
+          <!-- User Profile Picture -->
+          <div class="col-md-4">
+            <img src="../static/images/3.jpeg" id="myImage" data-toggle="modal" data-target="#myModal"
+              class="card-img-top mx-auto d-block rounded-circle w-75 rounded-circle mr-2" style="padding: 10px;"
+              onclick="openEditimage()">
+          </div>
+          <!-- User Profile Information -->
+          <div class="col-md-8">
+            <div class="card-body text-center  p-5 pt-5" style="padding-left: 50px;">
+              <h5 class="card-title ">{{ user.username }}</h5>
+              <p class="card-text ">your about <a href="#" class="btn btn-sm btn-outline-secondary;border:d-none"
+                  onclick="openEditForm()"><i class="fa fa-pencil-square-o"></i>
+                </a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Uploaded Posts Section -->
+    <div class="col-lg-12">
+      <div class="row mb-3">
+        <!-- Category Selection -->
+        <div class="col-sm-3">
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" role="button" type="button" id="categoryDropdown"
+              data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
+              Select Category
+            </button>
+            <div class="dropdown-menu" aria-labelledby="categoryDropdown">
+              <a class="dropdown-item" href="/profile/{{ user.username}}/questions">all</a>
+              <a class="dropdown-item" href="/profile/{{ user.username }}/questions/Technology">Technology</a>
+              <a class="dropdown-item" href="/profile/{{ user.username }}/questions/Music">Music</a>
+              <a class="dropdown-item" href="/profile/{{ user.username }}/questions/Sports">Sports</a>
+            </div>
+          </div>
+        </div>
+        <ul class="list-group list-group-horizontal" style="background: none; border: none;">
+          <li onclick="window.location.href='/profile/{{ user.username }}'" style="cursor: pointer;"
+            class="list-group-item">answers: {{ len_answers }}</li>
+          <li onclick="window.location.href='/profile/{{ user.username }}/questions'" style="cursor: pointer;"
+            class="list-group-item">questions: {{ len_questions }}</li>
+          <li onclick="window.location.href='/profile/{{ user.username }}/followers'" style="cursor: pointer;"
+            class="list-group-item">followers: {{ len_followers }}</li>
+          <li onclick="window.location.href='/profile/{{ user.username }}/following'" style="cursor: pointer;"
+            class="list-group-item">following: {{ len_following }}</li>
+        </ul>
+
+        <!-- New Post Button -->
+        <!-- <div class="col-sm-6 text-end">
+          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newPostModal">New Post</button>
+        </div> -->
+      </div>
+      <!-- Posts Display Section -->
+      {% block answers %} {% endblock %}
+
+
+      <!-- Posts Quesiton Section -->
+      {% block questions %} {% endblock %}
+
+      <!-- Followers Section -->
+      {% block followers %} {% endblock %}
+
+      <!-- Following Section -->
+      {% block following %} {% endblock %}
+
+
+      <!-- -------------- -->
+    </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="editForm">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Profile</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{{ url_for('views.create_question') }}" method="POST">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" value="{{user.username}}" name="username" class="form-control" id="username"
+              placeholder="Enter your username">
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" value="{{user.email}}" name="email" class="form-control" id="email"
+              aria-describedby="emailHelp" placeholder="Enter your email">
+          </div>
+          <div class="form-group">
+            <label for="password">Change Password</label>
+            <input type="password" name="password" class="form-control" id="#" placeholder="Enter new password here">
+          </div>
+          <div class="form-group">
+            <label for="about">About</label>
+            <textarea class="form-control" name="bio" id="about-you" rows="3">your about</textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Save changes</button>
+          <button type="submit" class="btn btn-secondary">cancel</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit profile photo</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+      </button>
+      </div>-->
+<div class="modal" tabindex="-1" role="dialog" id="editimage">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Profile</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{{ url_for('views.create_question') }}" method="POST">
+
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" name="photo" id="photo">
+            <label class="custom-file-label" for="photo">Change photo</label>
+          </div>
+
+          <div class="mb-3">
+            <label for="delete-profile-photo">Delete Profile Photo</label>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="delete_profile_pic" value="yes"
+                id="delete-profile-photo">
+              <label class="form-check-label" for="delete-profile-photo">
+                Yes
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Save changes</button>
+          <button type="submit" class="btn btn-secondary">cancel</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<script>
+  function openEditForm() {
+    $('#editForm').modal('show');
+  }
+</script>
+
+<script>
+  function openEditimage() {
+    $('#editimage').modal('show');
+  }
+</script>
+<!--<script>
+  $(document).ready(function() {
+    $('#myImage').on('click', function() {
+      var imageSrc = $(this).attr('src');
+      $('#modalImage').attr('src', imageSrc);
+      $('#myModal').modal('show');
+    });
+  });
+</script>-->
+
+
+<!-- <script>
+  function showQuestions() {
+    var category = document.getElementById("category").value;
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'profile/questions/' + category);
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        document.getElementById("questions").innerHTML = xhr.responseText;
+      }
+    };
+    xhr.send();
+  }
+  </script> -->
+
+
+
+{% endblock %}
